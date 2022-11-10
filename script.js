@@ -37,17 +37,6 @@ function generatePassword() {
     }
   }
 
-  // lowercaseSet
-  // uppercaseSet
-  // numberSet
-  // specialSet
-
-  // if true add to criteria array
-  // randomly generate number to decide which index
-  // then enter corrresponing if statement
-  // randomly generate number to decide which index for the specific element to include
-  // keep growing password string
-
   // Create criteriaSelected array that holds which criteria user has selected to include
   var criteriaSelected = [];
   if (lowercaseChar) {
@@ -64,14 +53,37 @@ function generatePassword() {
   }
   console.log(criteriaSelected);
 
+  var password = "";
+  lowercaseSet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+  uppercaseSet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+  numberSet = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  specialSet = [
+    '[', '`', '!', '@',  '#', '$', '%',
+    '^', '&', '*', '(',  ')', '_', '+',
+    '-', '=', '[', ']',  '{', '}', ';',
+    "'", ':', '"', '\\', '|', ',', '.',
+    '<', '>', '/', '?',  '~', ']', '/'
+  ];
+  for (var i = 0; i < numCharacters; i++) {
+      criteriaIdx = Math.floor(Math.random() * criteriaSelected.length);
+      if (criteriaSelected[criteriaIdx] === "lower") {
+        // generate new rand # b/w 0-25
+        setIdx = Math.floor(Math.random() * lowercaseSet.length);
+        password = password.concat(lowercaseSet[setIdx]);
+      } else if (criteriaSelected[criteriaIdx] === "upper") {
+        setIdx = Math.floor(Math.random() * uppercaseSet.length);
+        password = password.concat(uppercaseSet[setIdx]);
+      } else if (criteriaSelected[criteriaIdx] === "numeric") {
+        setIdx = Math.floor(Math.random() * numberSet.length);
+        password = password.concat(numberSet[setIdx]);
+      } else {
+        setIdx = Math.floor(Math.random() * specialSet.length);
+        password = password.concat(specialSet[setIdx]);
+      }
+  }
+  console.log(password);
+  return password;
 }
 
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
-
-// Upon clicking Generate Pwd button, prompt user to input num of characters in pwd
-// If user inputs outside range, give alert (>8 <129). If valid, prompt user to confirm special characters
-// numeric char
-// lower/upper
-// if user selects no for everything, have to select one criteria
-// output pwd on site
