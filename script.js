@@ -26,7 +26,7 @@ function generatePassword() {
   var numeric = false; 
   var specialChar = false;
 
-  while (!(specialChar||lowercaseChar||uppercaseChar)) {
+  while (!(lowercaseChar||uppercaseChar||numeric||specialChar)) {
     lowercaseChar = window.confirm("Click OK to confirm including lowercase characters.");
     uppercaseChar = window.confirm("Click OK to confirm including uppercase characters.");
     numeric = window.confirm("Click OK to confirm including numbers.");
@@ -36,7 +36,34 @@ function generatePassword() {
       window.alert("You must select at least one character type.");
     }
   }
-  
+
+  // lowercaseSet
+  // uppercaseSet
+  // numberSet
+  // specialSet
+
+  // if true add to criteria array
+  // randomly generate number to decide which index
+  // then enter corrresponing if statement
+  // randomly generate number to decide which index for the specific element to include
+  // keep growing password string
+
+  // Create criteriaSelected array that holds which criteria user has selected to include
+  var criteriaSelected = [];
+  if (lowercaseChar) {
+    criteriaSelected.push("lower");
+  } 
+  if (uppercaseChar) {
+    criteriaSelected.push("upper")
+  }
+  if (numeric) {
+    criteriaSelected.push("numeric");
+  }
+  if (specialChar) {
+    criteriaSelected.push("special");
+  }
+  console.log(criteriaSelected);
+
 }
 
 // Add event listener to generate button
