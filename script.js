@@ -10,38 +10,43 @@ function writePassword() {
 
 }
 
+// Function to generate password
 function generatePassword() {
+  // Keep asking user for number of characters in password until valid input (requires valid number to exit while loop)
   var numCharacters = 0;
-  while (numCharacters < 8 || numCharacters > 128){
+  while (numCharacters < 8 || numCharacters > 128) {
     numCharacters = window.prompt("Enter the number of characters you would like your password to contain (at least 8, no more than 128): ");
-    if (numCharacters < 8) {
+    console.log(numCharacters);
+    if (numCharacters == null) {    // exit function if user selects "Cancel" button
+      return;
+    } else if (numCharacters < 8) { // also handles the case if user selects "OK" button
       window.alert("Password length must be at least 8 characters.");
     } else if (numCharacters > 128) {
-      window.alert("Password length must be no more than 128 characters.");
+      window.alert("Password length must be at most 128 characters.");
     }
   }
-  
+
   var lowercaseChar = false;
   var uppercaseChar = false;
-  var numeric = false; 
+  var numeric = false;
   var specialChar = false;
 
-  while (!(lowercaseChar||uppercaseChar||numeric||specialChar)) {
+  // Keep asking user to select character type until they have chosen at least one type
+  while (!(lowercaseChar || uppercaseChar || numeric || specialChar)) {
+    // Inform user that they must select at least one criteria
+    window.alert("You must select at least one of the following character types: \n-Lowercase characters \n-Uppercase characters \n-Numbers \n-Special characters");
+    // Confirm each criteria
     lowercaseChar = window.confirm("Click OK to confirm including lowercase characters.");
     uppercaseChar = window.confirm("Click OK to confirm including uppercase characters.");
     numeric = window.confirm("Click OK to confirm including numbers.");
     specialChar = window.confirm("Click OK to confirm including special characters.");
-
-    if (!specialChar && !lowercaseChar && !uppercaseChar) {
-      window.alert("You must select at least one character type.");
-    }
   }
 
-  // Create criteriaSelected array that holds which criteria user has selected to include
+  // Create "criteriaSelected" array that holds strings representing which criteria the user has selected to include
   var criteriaSelected = [];
   if (lowercaseChar) {
     criteriaSelected.push("lower");
-  } 
+  }
   if (uppercaseChar) {
     criteriaSelected.push("upper")
   }
@@ -53,33 +58,36 @@ function generatePassword() {
   }
   console.log(criteriaSelected);
 
-  var password = "";
-  lowercaseSet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-  uppercaseSet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
-  numberSet = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-  specialSet = [
-    '[', '`', '!', '@',  '#', '$', '%',
-    '^', '&', '*', '(',  ')', '_', '+',
-    '-', '=', '[', ']',  '{', '}', ';',
-    "'", ':', '"', '\\', '|', ',', '.',
-    '<', '>', '/', '?',  '~', ']', '/'
+  // Arrays holding all possible values for lowercase, uppercase, numeric, and special characters
+  var lowercaseSet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+  var uppercaseSet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+  var numberSet = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  var specialSet = [
+    '[', ']', '!', '@', '#', '$', '%',
+    '^', '&', '*', '(', ')', '_', '+',
+    '-', '=', '{', '}', ';', "'", ':',
+    '"', '\\', '|', ',', '.', '<', '>',
+    '/', '?', '~', '`'
   ];
+
+  var password = "";
+  // Using for-loop to repeatedly generate random character and append to password 
   for (var i = 0; i < numCharacters; i++) {
-      criteriaIdx = Math.floor(Math.random() * criteriaSelected.length);
-      if (criteriaSelected[criteriaIdx] === "lower") {
-        // generate new rand # b/w 0-25
-        setIdx = Math.floor(Math.random() * lowercaseSet.length);
-        password = password.concat(lowercaseSet[setIdx]);
-      } else if (criteriaSelected[criteriaIdx] === "upper") {
-        setIdx = Math.floor(Math.random() * uppercaseSet.length);
-        password = password.concat(uppercaseSet[setIdx]);
-      } else if (criteriaSelected[criteriaIdx] === "numeric") {
-        setIdx = Math.floor(Math.random() * numberSet.length);
-        password = password.concat(numberSet[setIdx]);
-      } else {
-        setIdx = Math.floor(Math.random() * specialSet.length);
-        password = password.concat(specialSet[setIdx]);
-      }
+    // Generate random index to determine what character type in "criteriaSelected" will be added to password in this iteration
+    var criteriaIdx = Math.floor(Math.random() * criteriaSelected.length);
+    if (criteriaSelected[criteriaIdx] === "lower") {
+      var charType = lowercaseSet;
+    } else if (criteriaSelected[criteriaIdx] === "upper") {
+      var charType = uppercaseSet;
+    } else if (criteriaSelected[criteriaIdx] === "numeric") {
+      var charType = numberSet;
+    } else {
+      var charType = specialSet;
+    }
+
+    // Generate random index to determine which character within the corresponding character type array will be added
+    var setIdx = Math.floor(Math.random() * charType.length);
+    password = password.concat(charType[setIdx]);
   }
   console.log(password);
   return password;
