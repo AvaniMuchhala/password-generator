@@ -14,15 +14,24 @@ function writePassword() {
 function generatePassword() {
   // Keep asking user for number of characters in password until valid input (requires valid number to exit while loop)
   var numCharacters = 0;
-  while (numCharacters < 8 || numCharacters > 128) {
+  while (numCharacters < 8 || numCharacters > 128 || isNaN(numCharacters)) {
     numCharacters = window.prompt("Enter the number of characters you would like your password to contain (at least 8, no more than 128): ");
     console.log(numCharacters);
-    if (numCharacters == null) {    // exit function if user selects "Cancel" button
-      return;
-    } else if (numCharacters < 8) { // also handles the case if user selects "OK" button
-      window.alert("Password length must be at least 8 characters.");
-    } else if (numCharacters > 128) {
-      window.alert("Password length must be at most 128 characters.");
+    console.log(isNaN(numCharacters));
+
+    // If user selects "Cancel" button, return "" as password
+    if (numCharacters == null) {   
+      return "";
+    // If user provides invalid input (letters, special char) or hits "OK" without input
+    } else if (isNaN(numCharacters) || numCharacters === "") {
+      window.alert("Invalid input. Please enter a number.");
+    // If user provides a number, check if it falls outside specified range 
+    } else {
+      if (numCharacters < 8) { 
+        window.alert("Password length must be at least 8 characters.");
+      } else if (numCharacters > 128) {
+        window.alert("Password length must be at most 128 characters.");
+      }
     }
   }
 
@@ -89,7 +98,7 @@ function generatePassword() {
     var setIdx = Math.floor(Math.random() * charType.length);
     password = password.concat(charType[setIdx]);
   }
-  console.log(password);
+  console.log(password + " length: " + password.length);
   return password;
 }
 
