@@ -1,13 +1,22 @@
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
 
-// Write password to the #password input
-function writePassword() {
-  var password = generatePassword();
-  var passwordText = document.querySelector("#password");
+// Function to randomly shuffle characters in password
+function shufflePassword(pw) {
+  // Split string into array of characters
+  var pwArr = pw.split('');
 
-  passwordText.value = password;
-
+  for (var i = 0; i < pwArr.length; i++) {
+    // Random index for array of characters
+    var j = Math.floor(Math.random() * pwArr.length); 
+    // Swap pwArr[i] and pwArr[j]
+    var temp = pwArr[i];
+    pwArr[i] = pwArr[j];
+    pwArr[j] = temp;
+  }
+  // Convert character array to string
+  var newPw = pwArr.join('');
+  return newPw;
 }
 
 // Function to generate password
@@ -16,8 +25,6 @@ function generatePassword() {
   var numCharacters = 0;
   while (numCharacters < 8 || numCharacters > 128 || isNaN(numCharacters)) {
     numCharacters = window.prompt("Enter the number of characters you would like your password to contain (at least 8, no more than 128): ");
-    console.log(numCharacters);
-    console.log(isNaN(numCharacters));
 
     // If user selects "Cancel" button, return "" as password
     if (numCharacters == null) {   
@@ -51,22 +58,6 @@ function generatePassword() {
     specialChar = window.confirm("Click OK to confirm including special characters.");
   }
 
-  // Create "criteriaSelected" array that holds strings representing which criteria the user has selected to include
-  var criteriaSelected = [];
-  if (lowercaseChar) {
-    criteriaSelected.push("lower");
-  }
-  if (uppercaseChar) {
-    criteriaSelected.push("upper")
-  }
-  if (numeric) {
-    criteriaSelected.push("numeric");
-  }
-  if (specialChar) {
-    criteriaSelected.push("special");
-  }
-  console.log(criteriaSelected);
-
   // Arrays holding all possible values for lowercase, uppercase, numeric, and special characters
   var lowercaseSet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
   var uppercaseSet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
@@ -76,12 +67,33 @@ function generatePassword() {
     '^', '&', '*', '(', ')', '_', '+',
     '-', '=', '{', '}', ';', "'", ':',
     '"', '\\', '|', ',', '.', '<', '>',
-    '/', '?', '~', '`'
+    '/', '?', '~', '`', ' '
   ];
 
+  
+  // Create "criteriaSelected" array that holds strings representing which criteria the user has selected to include
+  // Start building password with random character of the types selected by user to guarantee criteria is included
+  var criteriaSelected = [];
   var password = "";
-  // Using for-loop to repeatedly generate random character and append to password 
-  for (var i = 0; i < numCharacters; i++) {
+  if (lowercaseChar) {
+    criteriaSelected.push("lower");
+    password = password.concat(lowercaseSet[Math.floor(Math.random() * lowercaseSet.length)]);
+  }
+  if (uppercaseChar) {
+    criteriaSelected.push("upper");
+    password = password.concat(uppercaseSet[Math.floor(Math.random() * uppercaseSet.length)]);
+  }
+  if (numeric) {
+    criteriaSelected.push("numeric");
+    password = password.concat(numberSet[Math.floor(Math.random() * numberSet.length)]);
+  }
+  if (specialChar) {
+    criteriaSelected.push("special");
+    password = password.concat(specialSet[Math.floor(Math.random() * specialSet.length)]);
+  }
+
+  // Using for-loop to repeatedly generate the remaining random characters and append to password until specified length is reached 
+  for (var i = password.length; i < numCharacters; i++) {
     // Generate random index to determine what character type in "criteriaSelected" will be added to password in this iteration
     var criteriaIdx = Math.floor(Math.random() * criteriaSelected.length);
     if (criteriaSelected[criteriaIdx] === "lower") {
@@ -98,8 +110,19 @@ function generatePassword() {
     var setIdx = Math.floor(Math.random() * charType.length);
     password = password.concat(charType[setIdx]);
   }
-  console.log(password + " length: " + password.length);
+
+  // Shuffle characters in password to randomize order as well
+  password = shufflePassword(password);
   return password;
+}
+
+// Write password to the #password input
+function writePassword() {
+  var password = generatePassword();
+  var passwordText = document.querySelector("#password");
+
+  passwordText.value = password;
+
 }
 
 // Add event listener to generate button
