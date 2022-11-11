@@ -23,7 +23,7 @@ function shufflePassword(pw) {
 function generatePassword() {
   // Keep asking user for number of characters in password until valid input (requires valid number to exit while loop)
   var numCharacters = 0;
-  while (numCharacters < 8 || numCharacters > 128 || isNaN(numCharacters)) {
+  while (numCharacters < 8 || numCharacters > 128 || isNaN(numCharacters) || (numCharacters % 1 !== 0)) {
     numCharacters = window.prompt("Enter the number of characters you would like your password to contain (at least 8, no more than 128): ");
 
     // If user selects "Cancel" button, return "" as password
@@ -32,12 +32,14 @@ function generatePassword() {
     // If user provides invalid input (letters, special char) or hits "OK" without input
     } else if (isNaN(numCharacters) || numCharacters === "") {
       window.alert("Invalid input. Please enter a number.");
-    // If user provides a number, check if it falls outside specified range 
+    // If user provides a number, check if it falls outside specified range. If falls within range, check if it's a decimal 
     } else {
       if (numCharacters < 8) { 
         window.alert("Password length must be at least 8 characters.");
       } else if (numCharacters > 128) {
         window.alert("Password length must be at most 128 characters.");
+      } else if (numCharacters % 1 !== 0) {
+        window.alert("Please enter ONLY whole numbers.");
       }
     }
   }
