@@ -6,11 +6,12 @@ This password generator creates a strong and secure password that meets certain 
 
 ## Usage
 
-Click on Website URL: 
+Click on Website URL: https://avanimuchhala.github.io/password-generator/
 
 Once on the website, click on the red button titled "Generate Password" to get started. Follow the window prompts as they appear. You will first be asked to input the number of characters you want in your password. You will then be asked to confirm which character types to include (press "OK" to confirm, press "Cancel" to not include). At least one character type must be confirmed. Once the criteria has been selected, the characters of those selected types will be randomly generated. The resulting password will appear on the screen which can then be copied for later usage. 
 
 Below is a screenshot showing the web application's appearance and functionality: 
+![Screenshot of Password Generator website](./assets/images/password-generator-img.png)
 
 ## License
 
